@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="ZEMA ROYALE — Premium Ethiopian and international dining. Explore our digital menu.">
+
+    <title>ZEMA ROYALE | Premium Dining</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        v-container">
+
+            <a href="#home" class="logo">
+                <span class="logo-mark">ZR</span>
+
+                <span class="logo-text">
+                    <strong>ZEMA</strong>
+                    <small>ROYALE</small>
+                </span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">WELCOME TO ZEMA ROYALE</p>
+
+            <h1>
+                Taste the
+                <span>Royal</span>
+                Experience
+            </h1>
+
+            <p class="hero-description">
+                Discover authentic Ethiopian flavors and international
+                favorites, prepared with passion and served with elegance.
+            </p>
+
+            <a href="#menu" class="hero-button">
+                Explore Our Menu
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MENU ================= -->
+
+    <main id="menu">
+
+        <section class="menu-section">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">OUR MENU</p>
+
+                <h2>
+                    Discover Something
+                    <span>Exceptional</span>
+                </h2>
+
+                <p>
+                    Explore our carefully selected dishes, from traditional
+                    Ethiopian favorites to international classics.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search for a dish..."
+                    autocomplete="off"
+                >
+
+                <span class="search-icon">⌕</span>
+
+            </div>
+
+
+            <!-- CATEGORIES -->
+
+            <div class="categories">
+
+                <button
+                    class="category-btn active"
+                    data-category="all">
+                    All
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="ethiopian">
+                    Ethiopian
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="grill">
+                    Grill
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="international">
+                    International
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="drinks">
+                    Drinks
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="dessert">
+                    Dessert
+                </button>
+
+            </div>
+
+
+            <!-- FOOD GRID -->
+
+            <div class="food-grid">
+
+
+                <!-- DORO WOT -->
+
+                <article
+                    class="food-card"
+                    data-category="ethiopian">
+
+                    <div class="food-image">
+
+                        <img
+                            src="doro-wot.jpg"
+                            alt="Doro Wot Ethiopian chicken stew"
+                            loading="lazy"
+                        >
+
+                        <span class="food-tag">
+                            Signature
+                        </span>
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Doro Wot
+                            </h3>
+
+                            <span class="price">
+                                450 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Traditional Ethiopian chicken stew prepared
+                            with berbere, spices and a perfectly cooked egg.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- TIBS -->
+
+                <article
+                    class="food-card"
+                    data-category="ethiopian">
+
+                    <div class="food-image">
+
+                        <img
+                            src="tibs.jpg"
+                            alt="Ethiopian special tibs"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Special Tibs
+                            </h3>
+
+                            <span class="price">
+                                520 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Tender pieces of seasoned beef sautéed with
+                            onions, peppers and traditional Ethiopian spices.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- KITFO -->
+
+                <article
+                    class="food-card"
+                    data-category="ethiopian">
+
+                    <div class="food-image">
+
+                        <img
+                            src="kitfo.jpg"
+                            alt="Ethiopian Kitfo"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Kitfo Royale
+                            </h3>
+
+                            <span class="price">
+                                550 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            A refined Ethiopian classic seasoned with
+                            traditional spices and served with fresh sides.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- MIXED GRILL -->
+
+                <article
+                    class="food-card"
+                    data-category="grill">
+
+                    <div class="food-image">
+
+                        <img
+                            src="mixed-grill.jpg"
+                            alt="Royal mixed grill"
+                            loading="lazy"
+                        >
+
+                        <span class="food-tag">
+                            Royal Choice
+                        </span>
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Royal Mixed Grill
+                            </h3>
+
+                            <span class="price">
+                                650 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            A generous selection of perfectly grilled meats,
+                            peppers, onions and signature house sauce.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PASTA -->
+
+                <article
+                    class="food-card"
+                    data-category="international">
+
+                    <div class="food-image">
+
+                        <img
+                            src="pasta.jpg"
+                            alt="Royal Alfredo pasta"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Royal Alfredo
+                            </h3>
+
+                            <span class="price">
+                                380 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Creamy Alfredo pasta finished with herbs and
+                            premium ingredients for a rich dining experience.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CHICKEN -->
+
+                <article
+                    class="food-card"
+                    data-category="international">
+
+                    <div class="food-image">
+
+                        <img
+                            src="chicken.jpg"
+                            alt="Royal grilled chicken"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Royal Grilled Chicken
+                            </h3>
+
+                            <span class="price">
+                                420 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Juicy grilled chicken seasoned with herbs and
+                            served with carefully selected sides.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- JUICE -->
+
+                <article
+                    class="food-card"
+                    data-category="drinks">
+
+                    <div class="food-image">
+
+                        <img
+                            src="images/juice.jpg"
+                            alt="Fresh tropical juice"
+                            loading="lazy"
+                        >
+
+                        <span class="food-tag">
+                            Fresh
+                        </span>
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Fresh Tropical Juice
+                            </h3>
+
+                            <span class="price">
+                                150 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Freshly blended seasonal fruits served chilled
+                            for the perfect refreshing experience.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COFFEE -->
+
+                <article
+                    class="food-card"
+                    data-category="drinks">
+
+                    <div class="food-image">
+
+                        <img
+                            src="coffee.jpg"
+                            alt="Traditional Ethiopian coffee"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-top">
+
+                            <h3 class="food-name">
+                                Ethiopian Coffee
+                            </h3>
+
+                            <span class="price">
+                                120 ETB
+                            </span>
+
+                        </div>
+
+                        <p class="food-description">
+                            Rich traditional Ethiopian coffee prepared with
+                            care and served in the classic style.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section class="about-section" id="about">
+
+            <div class="about-content">
+
+                <p class="eyebrow">
+                    THE ZEMA ROYALE EXPERIENCE
+                </p>
+
+                <h2>
+                    Where Flavor Meets
+                    <span>Elegance</span>
+                </h2>
+
+                <p>
+                    ZEMA ROYALE brings together the richness of Ethiopian
+                    cuisine and the elegance of modern dining.
+                    Every dish is prepared with carefully selected
+                    ingredients and attention to detail.
+                </p>
+
+                <p>
+                    Whether you are joining us for a traditional Ethiopian
+                    meal, a family celebration, or a special evening,
+                    our goal is to make every visit memorable.
+                </p>
+
+            </div>
+
+
+            <div class="about-stats">
+
+                <div class="stat">
+                    <strong>10+</strong>
+                    <span>Years Experience</span>
+                </div>
+
+                <div class="stat">
+                    <strong>30+</strong>
+                    <span>Signature Dishes</span>
+                </div>
+
+                <div class="stat">
+                    <strong>4.9</strong>
+                    <span>Guest Rating</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CONTACT ================= -->
+
+        <section class="contact-section" id="contact">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">
+                    VISIT ZEMA ROYALE
+                </p>
+
+                <h2>
+                    Your Table
+                    <span>Awaits</span>
+                </h2>
+
+                <p>
+                    Come experience exceptional food, warm hospitality
+                    and an atmosphere made for memorable moments.
+                </p>
+
+            </div>
+
+
+            <div class="contact-grid">
+
+                <div class="contact-card">
+
+                    <span class="contact-icon">📍</span>
+
+                    <h3>Location</h3>
+
+                    <p>
+                        Addis Ababa, Ethiopia
+                    </p>
+
+                </div>
+
+
+                <div class="contact-card">
+
+                    <span class="contact-icon">📞</span>
+
+                    <h3>Call Us</h3>
+
+                    <p>
+                        +251 900 000 000
+                    </p>
+
+                </div>
+
+
+                <div class="contact-card">
+
+                    <span class="contact-icon">🕐</span>
+
+                    <h3>Opening Hours</h3>
+
+                    <p>
+                        Daily: 10:00 AM – 10:00 PM
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <span class="logo-mark">
+                    ZR
+                </span>
+
+                <div>
+                    <strong>ZEMA ROYALE</strong>
+                    <small>PREMIUM DINING</small>
+                </div>
+
+            </div>
+
+
+            <p>
+                © 2026 ZEMA ROYALE. All rights reserved.
+            </p>
+
+
+            <p class="footer-note">
+                Crafted for unforgettable dining experiences.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>

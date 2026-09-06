@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ZEMA ROYALE | Operations Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span>ZEMA</span>
+            <b>ROYALE</b>
+            <small>RESTAURANT OPERATIONS</small>
+        </div>
+
+        <nav>
+            <a class="active" href="#">Dashboard</a>
+            <a href="#orders">Live Orders</a>
+            <a href="#analytics">Analytics</a>
+        </nav>
+
+        <div class="online">
+            ● System Online
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="top">
+
+            <div>
+                <p>ZEMA ROYALE</p>
+
+                <h1>Operations Dashboard</h1>
+
+                <span>
+                    Restaurant order management system
+                </span>
+            </div>
+
+            <strong>● LIVE</strong>
+
+        </header>
+
+
+        <!-- STATISTICS -->
+
+        <section class="stats">
+
+            <div>
+                <small>NEW ORDERS</small>
+                <b id="newOrders">0</b>
+            </div>
+
+            <div>
+                <small>ACTIVE ORDERS</small>
+                <b id="activeOrders">0</b>
+            </div>
+
+            <div>
+                <small>COMPLETED</small>
+                <b id="completedOrders">0</b>
+            </div>
+
+            <div>
+                <small>TODAY'S SALES</small>
+                <b id="todaySales">0 ETB</b>
+            </div>
+
+        </section>
+
+
+        <!-- ORDERS -->
+
+        <section class="panel" id="orders">
+
+            <div class="panelhead">
+
+                <div>
+                    <p>SERVICE CONTROL</p>
+                    <h2>Live Orders</h2>
+                </div>
+
+                <button id="clearOrders">
+                    Clear Demo Orders
+                </button>
+
+            </div>
+
+            <div id="ordersList"></div>
+
+        </section>
+
+
+        <!-- ANALYTICS -->
+
+        <section class="panel" id="analytics">
+
+            <p>PERFORMANCE</p>
+
+            <h2>Quick Overview</h2>
+
+            <div class="overview">
+
+                <div>
+                    <small>ORDERS TODAY</small>
+                    <b id="ordersToday">0</b>
+                </div>
+
+                <div>
+                    <small>AVERAGE ORDER</small>
+                    <b id="averageOrder">0 ETB</b>
+                </div>
+
+                <div>
+                    <small>TOP ITEM</small>
+                    <b id="topItem">—</b>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            ZEMA ROYALE • DIGITAL DINING PLATFORM • DEMO ENVIRONMENT
+        </footer>
+
+    </main>
+
+
+    <script src="dashboard.js"></script>
+
+</body>
+</html>
