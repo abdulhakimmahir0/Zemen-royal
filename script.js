@@ -60,7 +60,7 @@ const foods = {
     "Doro Wot": {
         category: "ETHIOPIAN",
         price: 450,
-        image: "images/doro-wot.jpg",
+        image: "doro-wot.jpg",
         description:
             "Traditional Ethiopian chicken stew prepared with berbere, onions and carefully selected spices."
     },
@@ -68,7 +68,7 @@ const foods = {
     "Special Tibs": {
         category: "ETHIOPIAN",
         price: 520,
-        image: "images/tibs.jpg",
+        image: "tibs.jpg",
         description:
             "Tender pieces of meat sautéed with peppers, onions and aromatic Ethiopian herbs."
     },
@@ -76,7 +76,7 @@ const foods = {
     "Kitfo Royale": {
         category: "ETHIOPIAN",
         price: 550,
-        image: "images/kitfo.jpg",
+        image: "kitfo.jpg",
         description:
             "A refined Ethiopian classic seasoned with traditional spices and served with care."
     },
@@ -84,7 +84,7 @@ const foods = {
     "Royal Mixed Grill": {
         category: "GRILL",
         price: 650,
-        image: "images/mixed-grill.jpg",
+        image: "mixed-grill.jpg",
         description:
             "A premium selection of grilled meats prepared for guests who want the full royal experience."
     },
@@ -92,7 +92,7 @@ const foods = {
     "Royal Alfredo": {
         category: "INTERNATIONAL",
         price: 380,
-        image: "images/pasta.jpg",
+        image: "pasta.jpg",
         description:
             "Creamy pasta prepared with a rich and luxurious sauce for a modern international taste."
     },
@@ -100,7 +100,7 @@ const foods = {
     "Royal Grilled Chicken": {
         category: "INTERNATIONAL",
         price: 420,
-        image: "images/chicken.jpg",
+        e: "chicken.jpg",
         description:
             "Juicy grilled chicken served with our signature sides and carefully prepared seasoning."
     },
@@ -108,7 +108,7 @@ const foods = {
     "Fresh Tropical Juice": {
         category: "DRINKS",
         price: 150,
-        image: "images/juice.jpg",
+        image: "juice.jpg",
         description:
             "Freshly prepared tropical fruit juice served chilled for a refreshing experience."
     },
@@ -116,7 +116,7 @@ const foods = {
     "Ethiopian Coffee": {
         category: "DRINKS",
         price: 120,
-        image: "images/coffee.jpg",
+        image: "coffee.jpg",
         description:
             "Traditional Ethiopian coffee prepared with care and served with the spirit of Ethiopian hospitality."
     }
