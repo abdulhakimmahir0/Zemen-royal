@@ -102,7 +102,7 @@ const foods = {
     "Royal Grilled Chicken": {
         category: "INTERNATIONAL",
         price: 420,
-        e: "chicken.jpg",
+        image: "chicken.jpg",
         description:
             "Juicy grilled chicken served with our signature sides and carefully prepared seasoning."
     },
