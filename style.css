@@ -210,7 +210,7 @@ a {
             rgba(5, 7, 6, 0.48),
             rgba(5, 7, 6, 0.82)
         ),
-        url("images/hero.jpg");
+        url("hero.jpg");
 
     background-size: cover;
     background-position: center;
