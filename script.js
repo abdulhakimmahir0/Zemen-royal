@@ -3,6 +3,8 @@
    ========================================================= */
 
 const ORDER_KEY = "zemaRoyaleOrders";
+const SUPABASE_URL = "https://fywchmoqexsqldsxaatk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_nCuOx745eMyJBz91GZXWzA_CveVVueR";
 
 let cart = [];
 
