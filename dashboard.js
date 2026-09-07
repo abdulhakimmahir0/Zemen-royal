@@ -1,67 +1,212 @@
-const KEY = "zemaRoyaleOrders";
+/* =========================================================
+   ZEMA ROYALE — RESTAURANT DASHBOARD
+   SUPABASE ONLINE VERSION
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://fywchmoqexsqldsxaatk.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_nCuOx745eMyJBz91GZXWzA_CveVVueR";
 
 
-/* GET ORDERS */
+/* =========================================================
+   SUPABASE REQUEST
+   ========================================================= */
 
-function getOrders() {
+async function supabaseRequest(endpoint, options = {}) {
 
-    return JSON.parse(
-        localStorage.getItem(KEY) || "[]"
+    const response = await fetch(
+        SUPABASE_URL + "/rest/v1/" + endpoint,
+        {
+            ...options,
+
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Content-Type": "application/json",
+                ...(options.headers || {})
+            }
+        }
+    );
+
+    if (!response.ok) {
+
+        const errorText = await response.text();
+
+        throw new Error(
+            errorText || "Supabase request failed."
+        );
+    }
+
+    const text = await response.text();
+
+    return text ? JSON.parse(text) : null;
+}
+
+
+/* =========================================================
+   GET ORDERS FROM SUPABASE
+   ========================================================= */
+
+async function getOrders() {
+
+    try {
+
+        return await supabaseRequest(
+            "orders?select=*&order=created_at.desc"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Could not load orders:",
+            error
+        );
+
+        return [];
+
+    }
+}
+
+
+/* =========================================================
+   UPDATE ORDER STATUS
+   ========================================================= */
+
+async function updateOrderStatus(id, newStatus) {
+
+    try {
+
+        await supabaseRequest(
+            `orders?id=eq.${id}`,
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Prefer": "return=minimal"
+                },
+
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            }
+        );
+
+        await render();
+
+    } catch (error) {
+
+        console.error(
+            "Status update failed:",
+            error
+        );
+
+        alert(
+            "Could not update the order. Please try again."
+        );
+    }
+}
+
+
+/* =========================================================
+   FORMAT MONEY
+   ========================================================= */
+
+function money(value) {
+
+    return Number(value || 0)
+        .toLocaleString() + " ETB";
+
+}
+
+
+/* =========================================================
+   SAFE TEXT
+   ========================================================= */
+
+function safe(value) {
+
+    return String(value ?? "")
+        .replace(
+            /[&<>"']/g,
+            character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[character])
+        );
+
+}
+
+
+/* =========================================================
+   FORMAT TIME
+   ========================================================= */
+
+function formatTime(value) {
+
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
     );
 
 }
 
 
-/* SAVE ORDERS */
+/* =========================================================
+   RENDER DASHBOARD
+   ========================================================= */
 
-function saveOrders(orders) {
+async function render() {
 
-    localStorage.setItem(
-        KEY,
-        JSON.stringify(orders)
-    );
-
-}
+    const orders = await getOrders();
 
 
-/* RENDER DASHBOARD */
+    /* =====================================================
+       STATISTICS
+       ===================================================== */
 
-function render() {
-
-    const orders = getOrders();
-
-
-    /* TODAY */
-
-    const today = orders.filter(order => {
-
-        return new Date(order.time).toDateString() ===
-               new Date().toDateString();
-
-    });
+    const todayString =
+        new Date().toDateString();
 
 
-    /* SALES */
+    const todayOrders =
+        orders.filter(order => {
 
-    const sales = today.reduce(
-        (sum, order) => {
+            return new Date(
+                order.created_at
+            ).toDateString() === todayString;
 
-            return sum + Number(order.total || 0);
-
-        },
-        0
-    );
+        });
 
 
-    /* STATISTICS */
+    const todaySales =
+        todayOrders.reduce(
+            (sum, order) =>
+                sum + Number(order.total || 0),
+            0
+        );
 
-    document.getElementById("newOrders").textContent =
+
+    const newOrders =
         orders.filter(
-            order => order.status === "New"
+            order =>
+                order.status === "New"
         ).length;
 
 
-    document.getElementById("activeOrders").textContent =
+    const activeOrders =
         orders.filter(
             order =>
                 order.status === "Preparing" ||
@@ -69,164 +214,297 @@ function render() {
         ).length;
 
 
-    document.getElementById("completedOrders").textContent =
+    const completedOrders =
         orders.filter(
-            order => order.status === "Completed"
+            order =>
+                order.status === "Completed"
         ).length;
 
 
-    document.getElementById("todaySales").textContent =
-        sales.toLocaleString() + " ETB";
-
-
-    /* ANALYTICS */
-
-    document.getElementById("ordersToday").textContent =
-        today.length;
-
-
-    const average =
-        today.length
-            ? Math.round(sales / today.length)
+    const averageOrder =
+        todayOrders.length
+            ? Math.round(
+                todaySales /
+                todayOrders.length
+            )
             : 0;
 
 
-    document.getElementById("averageOrder").textContent =
-        average.toLocaleString() + " ETB";
+    /* =====================================================
+       UPDATE STAT CARDS
+       ===================================================== */
+
+    const newElement =
+        document.getElementById(
+            "newOrders"
+        );
+
+    if (newElement) {
+        newElement.textContent =
+            newOrders;
+    }
 
 
-    /* TOP ITEM */
+    const activeElement =
+        document.getElementById(
+            "activeOrders"
+        );
+
+    if (activeElement) {
+        activeElement.textContent =
+            activeOrders;
+    }
+
+
+    const completedElement =
+        document.getElementById(
+            "completedOrders"
+        );
+
+    if (completedElement) {
+        completedElement.textContent =
+            completedOrders;
+    }
+
+
+    const salesElement =
+        document.getElementById(
+            "todaySales"
+        );
+
+    if (salesElement) {
+
+        salesElement.textContent =
+            money(todaySales);
+
+    }
+
+
+    const ordersTodayElement =
+        document.getElementById(
+            "ordersToday"
+        );
+
+    if (ordersTodayElement) {
+
+        ordersTodayElement.textContent =
+            todayOrders.length;
+
+    }
+
+
+    const averageElement =
+        document.getElementById(
+            "averageOrder"
+        );
+
+    if (averageElement) {
+
+        averageElement.textContent =
+            money(averageOrder);
+
+    }
+
+
+    /* =====================================================
+       TOP SELLING ITEM
+       ===================================================== */
 
     const itemCounts = {};
 
 
-    today.forEach(order => {
+    todayOrders.forEach(order => {
 
-        order.items.forEach(item => {
+        let items = [];
 
-            itemCounts[item.name] =
-                (itemCounts[item.name] || 0) +
-                Number(item.quantity);
+        try {
+
+            items =
+                Array.isArray(order.items)
+                    ? order.items
+                    : JSON.parse(
+                        order.items || "[]"
+                    );
+
+        } catch {
+
+            items = [];
+
+        }
+
+
+        items.forEach(item => {
+
+            const name =
+                item.name || "Unknown";
+
+
+            itemCounts[name] =
+                (itemCounts[name] || 0) +
+                Number(item.quantity || 0);
 
         });
 
     });
 
 
-    const topItem =
+    const top =
         Object.entries(itemCounts)
-        .sort((a, b) => b[1] - a[1])[0];
+            .sort(
+                (a, b) =>
+                    b[1] - a[1]
+            )[0];
 
 
-    document.getElementById("topItem").textContent =
-        topItem ? topItem[0] : "—";
+    const topElement =
+        document.getElementById(
+            "topItem"
+        );
 
 
-    /* ORDER LIST */
+    if (topElement) {
+
+        topElement.textContent =
+            top
+                ? top[0]
+                : "—";
+
+    }
+
+
+    /* =====================================================
+       ORDERS LIST
+       ===================================================== */
 
     const list =
-        document.getElementById("ordersList");
+        document.getElementById(
+            "ordersList"
+        );
+
+
+    if (!list) {
+        return;
+    }
 
 
     if (!orders.length) {
 
         list.innerHTML = `
             <div class="empty">
+
                 No orders yet.
-                Submit an order from the customer menu.
+
+                <br>
+
+                Orders placed from the
+                ZEMA ROYALE customer menu
+                will appear here automatically.
+
             </div>
         `;
 
         return;
-
     }
 
 
-    /* BUILD ORDERS */
-
     list.innerHTML =
-        orders
-        .slice()
-        .reverse()
-        .map((order, reverseIndex) => {
+        orders.map(order => {
 
-            const index =
-                orders.length - 1 - reverseIndex;
+            let items = [];
+
+            try {
+
+                items =
+                    Array.isArray(order.items)
+                        ? order.items
+                        : JSON.parse(
+                            order.items || "[]"
+                        );
+
+            } catch {
+
+                items = [];
+
+            }
 
 
-            /* NEXT BUTTON */
-
-            let nextButton = "";
+            let action = "";
 
 
-            if (order.status === "New") {
+            if (
+                order.status === "New"
+            ) {
 
-                nextButton = `
+                action = `
                     <button
                         class="action"
-                        onclick="changeStatus(${index}, 'Preparing')"
-                    >
+                        onclick="
+                            updateOrderStatus(
+                                ${order.id},
+                                'Preparing'
+                            )
+                        ">
+
                         START PREPARING
+
                     </button>
                 `;
 
             }
 
 
-            else if (order.status === "Preparing") {
+            else if (
+                order.status === "Preparing"
+            ) {
 
-                nextButton = `
+                action = `
                     <button
                         class="action"
-                        onclick="changeStatus(${index}, 'Ready')"
-                    >
+                        onclick="
+                            updateOrderStatus(
+                                ${order.id},
+                                'Ready'
+                            )
+                        ">
+
                         MARK READY
+
                     </button>
                 `;
 
             }
 
 
-            else if (order.status === "Ready") {
+            else if (
+                order.status === "Ready"
+            ) {
 
-                nextButton = `
+                action = `
                     <button
                         class="action"
-                        onclick="changeStatus(${index}, 'Completed')"
-                    >
+                        onclick="
+                            updateOrderStatus(
+                                ${order.id},
+                                'Completed'
+                            )
+                        ">
+
                         COMPLETE
+
                     </button>
                 `;
 
             }
 
 
-            /* ITEMS */
-
-            const items =
-                order.items
-                .map(item => {
-
-                    return `
-                        ${safe(item.name)}
-                        × ${item.quantity}
-                    `;
-
-                })
-                .join(" • ");
-
-
-            /* TIME */
-
-            const time =
-                new Date(order.time)
-                .toLocaleTimeString(
-                    [],
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
+            const itemText =
+                items.length
+                    ? items.map(
+                        item =>
+                            `${safe(item.name)}
+                             × ${Number(item.quantity || 0)}`
+                    ).join(" • ")
+                    : "No items";
 
 
             return `
@@ -236,24 +514,41 @@ function render() {
                     <div>
 
                         <span class="badge">
-                            ${safe(order.status).toUpperCase()}
+
+                            ${safe(
+                                order.status
+                            ).toUpperCase()}
+
                         </span>
 
+
                         <div class="customer">
-                            Order #${safe(order.orderNumber)}
+
+                            Order
+                            #${safe(
+                                order.order_number
+                            )}
+
                         </div>
+
 
                         <div class="meta">
 
-                            ${safe(order.customer)}
+                            ${safe(
+                                order.customer
+                            )}
 
                             • Table/Room
 
-                            ${safe(order.table)}
+                            ${safe(
+                                order.table_number
+                            )}
 
                             •
 
-                            ${time}
+                            ${formatTime(
+                                order.created_at
+                            )}
 
                         </div>
 
@@ -262,7 +557,7 @@ function render() {
 
                     <div class="items">
 
-                        ${items}
+                        ${itemText}
 
                     </div>
 
@@ -271,23 +566,16 @@ function render() {
 
                         <div class="total">
 
-                            ${Number(order.total).toLocaleString()}
-                            ETB
+                            ${money(
+                                order.total
+                            )}
 
                         </div>
 
 
                         <div class="actions">
 
-                            ${nextButton}
-
-
-                            <button
-                                class="action"
-                                onclick="removeOrder(${index})"
-                            >
-                                REMOVE
-                            </button>
+                            ${action}
 
                         </div>
 
@@ -297,103 +585,47 @@ function render() {
 
             `;
 
-        })
-        .join("");
+        }).join("");
 
 }
 
 
-/* CHANGE STATUS */
+/* =========================================================
+   CLEAR LOCAL DEMO DATA
+   ========================================================= */
 
-function changeStatus(index, newStatus) {
-
-    const orders = getOrders();
-
-
-    if (!orders[index]) {
-        return;
-    }
-
-
-    orders[index].status = newStatus;
-
-
-    saveOrders(orders);
-
-
-    render();
-
-}
-
-
-/* REMOVE ORDER */
-
-function removeOrder(index) {
-
-    const orders = getOrders();
-
-
-    orders.splice(index, 1);
-
-
-    saveOrders(orders);
-
-
-    render();
-
-}
-
-
-/* SECURITY */
-
-function safe(value) {
-
-    return String(value).replace(
-        /[&<>"']/g,
-        character => {
-
-            return {
-
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-
-            }[character];
-
-        }
+const clearButton =
+    document.getElementById(
+        "clearOrders"
     );
 
+
+if (clearButton) {
+
+    clearButton.onclick =
+        function () {
+
+            alert(
+                "Orders are now stored online in Supabase. Use the Supabase dashboard to delete test orders."
+            );
+
+        };
+
 }
 
 
-/* CLEAR DEMO ORDERS */
-
-document
-    .getElementById("clearOrders")
-    .addEventListener("click", function () {
-
-        if (
-            confirm(
-                "Clear all demo orders?"
-            )
-        ) {
-
-            localStorage.removeItem(KEY);
-
-            render();
-
-        }
-
-    });
-
-
-/* INITIAL LOAD */
+/* =========================================================
+   START
+   ========================================================= */
 
 render();
 
 
-/* AUTO REFRESH */
+/* =========================================================
+   AUTO REFRESH
+   ========================================================= */
 
-setInterval(render, 1500);
+setInterval(
+    render,
+    2000
+);
