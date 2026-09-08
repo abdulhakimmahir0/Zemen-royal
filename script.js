@@ -976,17 +976,127 @@ async function placeOrder() {
         );
     }
 }
+/* =========================================================
+   ORDER SUCCESS
+   ========================================================= */
+
+function showOrderSuccess(order) {
+
+    const modal = document.createElement("div");
+
+    modal.id = "orderSuccess";
+
+    modal.innerHTML = `
+        <div style="
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 20px;
+        ">
+
+            <div style="
+                background: #101510;
+                border: 1px solid #c9a227;
+                border-radius: 16px;
+                padding: 35px;
+                width: min(500px, 100%);
+                text-align: center;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            ">
+
+                <div style="
+                    font-size: 55px;
+                    margin-bottom: 10px;
+                ">✓</div>
+
+                <h2 style="
+                    color: #c9a227;
+                    margin: 0 0 10px;
+                    font-size: 30px;
+                ">
+                    Order Confirmed
+                </h2>
+
+                <p style="
+                    color: #eee;
+                    font-size: 17px;
+                    margin-bottom: 25px;
+                ">
+                    Thank you, ${order.customer}!
+                </p>
+
+                <div style="
+                    background: #181e18;
+                    border-radius: 10px;
+                    padding: 18px;
+                    text-align: left;
+                    margin-bottom: 20px;
+                ">
+
+                    <p style="color:#c9a227;">
+                        <strong>Order #${order.orderNumber}</strong>
+                    </p>
+
+                    <p>
+                        Table / Room:
+                        <strong>${order.table}</strong>
+                    </p>
+
+                    <p>
+                        Total:
+                        <strong>${order.total} ETB</strong>
+                    </p>
+
+                </div>
+
+                <p style="
+                    color: #aaa;
+                    margin-bottom: 20px;
+                ">
+                    Your order has been sent to the restaurant.
+                </p>
+
+                <button id="successCloseButton" style="
+                    width: 100%;
+                    padding: 14px;
+                    border: 1px solid #c9a227;
+                    background: #c9a227;
+                    color: #111;
+                    font-weight: bold;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 15px;
+                ">
+                    DONE
+                </button>
+
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document
+        .getElementById("successCloseButton")
+        .addEventListener("click", function () {
+            modal.remove();
+        });
+}
 
 
 /* =========================================================
-   ESCAPE KEY
+    KEY
    ========================================================= */
 
 document.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key !== "Escape") {
+        if (event.key !== "") {
             return;
         }
 
