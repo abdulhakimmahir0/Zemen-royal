@@ -829,322 +829,152 @@ function updateCartCount() {
    PLACE ORDER
    ========================================================= */
 
-function placeOrder() {
+async function placeOrder() {
 
     if (cart.length === 0) {
-
-        alert(
-            "Your order is empty. Please add an item first."
-        );
-
+        alert("Your order is empty. Please add an item first.");
         return;
     }
 
-
     const customerInput =
-        document.getElementById(
-            "customerName"
-        );
-
+        document.getElementById("customerName");
 
     const tableInput =
-        document.getElementById(
-            "customerTable"
-        );
-
+        document.getElementById("customerTable");
 
     const customerName =
         customerInput.value.trim();
 
-
     const tableNumber =
         tableInput.value.trim();
 
-
     if (!customerName) {
-
-        alert(
-            "Please enter your name."
-        );
-
+        alert("Please enter your name.");
         customerInput.focus();
-
         return;
     }
-
 
     if (!tableNumber) {
-
-        alert(
-            "Please enter your table or room number."
-        );
-
+        alert("Please enter your table or room number.");
         tableInput.focus();
-
         return;
     }
-
-
-    const existingOrders =
-        getOrders();
-
-
-    let highestOrder =
-        1000;
-
-
-    existingOrders.forEach(
-        order => {
-
-            const number =
-                Number(
-                    order.orderNumber
-                );
-
-
-            if (
-                Number.isFinite(number) &&
-                number > highestOrder
-            ) {
-
-                highestOrder = number;
-
-            }
-
-        }
-    );
-
-
-    const orderNumber =
-        highestOrder + 1;
-
 
     const total =
         cart.reduce(
             (sum, item) =>
-                sum +
-                item.price *
-                item.quantity,
+                sum + item.price * item.quantity,
             0
         );
 
+    try {
 
-    const order = {
+        /* Get latest order number */
+        const latestResponse = await fetch(
+            SUPABASE_URL +
+            "/rest/v1/orders?select=order_number&order=order_number.desc&limit=1",
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
+            }
+        );
 
-        orderNumber,
+        if (!latestResponse.ok) {
+            throw new Error(
+                await latestResponse.text()
+            );
+        }
 
-        customer:
-            customerName,
+        const latestOrders =
+            await latestResponse.json();
 
-        table:
-            tableNumber,
+        const orderNumber =
+            latestOrders.length > 0
+                ? Number(latestOrders[0].order_number) + 1
+                : 1001;
 
-        items:
-            cart.map(item => ({
+
+        /* Create order */
+        const order = {
+            order_number: orderNumber,
+
+            customer: customerName,
+
+            table_number: tableNumber,
+
+            items: cart.map(item => ({
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity
             })),
 
-        total,
+            total: total,
 
-        status:
-            "New",
+            status: "New"
+        };
 
-        time:
-            new Date().toISOString()
 
-    };
+        /* Send order to Supabase */
+        const response = await fetch(
+            SUPABASE_URL + "/rest/v1/orders",
+            {
+                method: "POST",
 
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                },
 
-    existingOrders.push(order);
-
-
-    saveOrders(
-        existingOrders
-    );
-
-
-    cart = [];
-
-    updateCartCount();
-
-
-    customerInput.value = "";
-
-    tableInput.value = "";
-
-
-    closeCart();
-
-
-    showOrderSuccess(
-        order
-    );
-
-}
-
-
-/* =========================================================
-   BEAUTIFUL ORDER SUCCESS MODAL
-   ========================================================= */
-
-function showOrderSuccess(order) {
-
-    const old =
-        document.getElementById(
-            "orderSuccess"
-        );
-
-
-    if (old) {
-        old.remove();
-    }
-
-
-    const modal =
-        document.createElement("div");
-
-
-    modal.id =
-        "orderSuccess";
-
-
-    modal.className =
-        "order-success";
-
-
-    modal.innerHTML = `
-
-        <div class="order-success-box">
-
-            <div class="success-check">
-                ✓
-            </div>
-
-
-            <div class="success-label">
-                ZEMA ROYALE
-            </div>
-
-
-            <h2>
-                Order Successful
-            </h2>
-
-
-            <div class="success-customer">
-                Dear ${escapeHTML(order.customer)},
-            </div>
-
-
-            <p class="success-message">
-                Thank you for choosing ZEMA ROYALE.
-                Your order has been received successfully.
-            </p>
-
-
-            <div class="success-details">
-
-                <div class="success-detail">
-
-                    <small>
-                        ORDER
-                    </small>
-
-                    <strong>
-                        #${escapeHTML(order.orderNumber)}
-                    </strong>
-
-                </div>
-
-
-                <div class="success-detail">
-
-                    <small>
-                        TABLE / ROOM
-                    </small>
-
-                    <strong>
-                        ${escapeHTML(order.table)}
-                    </strong>
-
-                </div>
-
-
-                <div class="success-detail">
-
-                    <small>
-                        TOTAL
-                    </small>
-
-                    <strong>
-                        ${money(order.total)}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <p class="success-note">
-                Our team will prepare your order shortly.
-            </p>
-
-
-            <button
-                class="success-button"
-                id="continueBrowsing">
-                CONTINUE BROWSING
-            </button>
-
-        </div>
-    `;
-
-
-    document.body.appendChild(modal);
-
-
-    document
-        .getElementById(
-            "continueBrowsing"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                modal.remove();
-
-                document.body.classList.remove(
-                    "modal-open"
-                );
-
+                body: JSON.stringify(order)
             }
         );
 
 
-    modal.addEventListener(
-        "click",
-        function (event) {
+        if (!response.ok) {
 
-            if (event.target === modal) {
+            const errorText =
+                await response.text();
 
-                modal.remove();
-
-                document.body.classList.remove(
-                    "modal-open"
-                );
-
-            }
-
+            throw new Error(errorText);
         }
-    );
 
 
-    document.body.classList.add(
-        "modal-open"
-    );
+        /* Clear cart */
+        cart = [];
 
+        updateCartCount();
+
+        customerInput.value = "";
+
+        tableInput.value = "";
+
+        closeCart();
+
+
+        /* Show success */
+        showOrderSuccess({
+            orderNumber: orderNumber,
+            customer: customerName,
+            table: tableNumber,
+            items: order.items,
+            total: total,
+            status: "New"
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "SUPABASE ORDER ERROR:",
+            error
+        );
+
+        alert(
+            "Order could not be sent. Please try again."
+        );
+    }
 }
 
 
